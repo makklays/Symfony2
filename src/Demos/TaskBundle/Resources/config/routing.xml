@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="demos_task_home" path="/">
+        <default key="_controller">DemosTaskBundle:Default:index</default>
+    </route>
+
+    <route id="demos_task_all" path="/all">
+        <default key="_controller">DemosTaskBundle:Task:index</default>
+    </route>
+
+    <route id="demos_task_iscompleted" path="/iscompleted">
+        <default key="_controller">DemosTaskBundle:Task:isCompleted</default>
+    </route>
+
+    <route id="demos_task_create" path="/create">
+        <default key="_controller">DemosTaskBundle:Task:create</default>
+    </route>
+
+    <route id="demos_task_view" path="/view/{id}">
+        <default key="_controller">DemosTaskBundle:Task:view</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+
+    <route id="demos_task_edit" path="/edit/{id}">
+        <default key="_controller">DemosTaskBundle:Task:edit</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+
+    <route id="demos_task_delete" path="/delete/{id}">
+        <default key="_controller">DemosTaskBundle:Task:delete</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+
+    <route id="demos_task_image" path="/image">
+        <default key="_controller">DemosTaskBundle:Task:image</default>
+    </route>
+
+    <route id="demos_task_completed" path="/completed/{id}">
+        <default key="_controller">DemosTaskBundle:Task:completed</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+
+    <route id="demos_task_cal_day" path="/cal/day/{y}/{m}/{d}">
+        <default key="_controller">DemosTaskBundle:Task:calDay</default>
+        <requirement key="y">\d+</requirement>
+        <requirement key="m">\d+</requirement>
+        <requirement key="d">\d+</requirement>
+    </route>
+
+    <route id="demos_task_cal_month" path="/cal/month/{y}/{m}">
+        <default key="_controller">DemosTaskBundle:Task:calMonth</default>
+        <requirement key="y">\d+</requirement>
+        <requirement key="m">\d+</requirement>
+    </route>
+
+
+    <!--route id="demos_task_login" path="/login">
+        <default key="_controller">DemosTaskBundle:Security:login</default>
+    </route-->
+
+    <route id="demos_task_admin" path="/admin">
+        <default key="_controller">DemosTaskBundle:Admin:login</default>
+    </route>
+
+    <route id="demos_task_admin_check" path="/admin_check">
+        <default key="_controller">DemosTaskBundle:Admin:check</default>
+    </route>
+
+</routes>
