@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('demos_task_home') }}">Home</a></li>
+        <li><a href="{{ path('demos_task_all') }}">Tasks</a></li>
+        <li class="active"><!--#{{ task.id }}--> {{ task.title }}</li>
+    </ol>
+
+    <h2>{{ task.title }}</h2>
+
+    <div class="row">
+        <div class="col-md-2">
+            Type: <span class="label label-danger">{{ task.type }}</span>
+        </div>
+        <div class="col-md-2">
+            Priority: {{ task.priority }}
+        </div>
+        <div class="col-md-6">
+            When: {{ task.createdDate.format("j F Y") }}
+        </div>
+    </div>
+
+    <!--div>Type: <span class="label label-danger">{{ task.type }}</span></div>
+    <div>Priority: {{ task.priority }}</div>
+    <div>When: {{ task.createdDate.format("j F Y") }}</div-->
+
+    <div>
+        <br/><p>{{task.task|nl2br}}</p><br/>
+    </div>
+
+    {% if task.attachment|length > 0 %}
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ asset('uploads/task/attachments/' ~ task.attachment) }}">
+                    <div class="thumbnail">
+                        <img src="{{ asset('uploads/task/attachments/' ~ task.attachment) }}" alt="attachment" />
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if comments|length > 0 %}
+        <fieldset>
+            <legend>
+                <i class="chevron chevron-right"></i>
+                <a id="idcomments" href="#">Comments</a>
+            </legend>
+            <div class="allcomments">
+                {% for comment in comments %}
+                    <div>
+                        <p><small>uid={{ comment.uid }}  |  {{ comment.createdDate.format("j F Y") }}</small></p>
+                        <p>{{ comment.comment|nl2br }}</p>
+                        <!--p><a href="{{ asset('uploads/comment/attachments/' ~ comment.attachment) }}">Attachment</a></p>
+                        <br/-->
+
+                        <div class="row">
+                            <div class="col-md-2">
+                            <a href="{{ asset('uploads/comment/attachments/' ~ comment.attachment) }}">
+                                <div class="thumbnail">
+                                <img src="{{ asset('uploads/comment/attachments/' ~ comment.attachment) }}" alt="attachment" />
+                                </div>
+                            </a>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+    {% endif %}
+
+    <fieldset>
+        <legend class="collapsed">
+            <i class="chevron chevron-right"></i>
+            <a id="idcomment" href="#">Add comments</a>
+        </legend>
+        <div class="comment" style="display:none;">
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_start(form_comment) }}
+                    {{ form_widget(form_comment) }}
+                    {{ form_end(form_comment) }}
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="row">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">Status</label>
+                    <div class="col-md-3">
+                        <select name="status" class="form-control">
+                            <option value="Not considered">Not considered</option>
+                            <option value="In process">In process</option>
+                            <option value="Return on completion">Return on completion</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+
+    <form action="/app_dev.php/task/completed/{{ task.id }}" style="width:70px; float:left;">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+
+    <form action="{{ path('demos_task_all') }}">
+        <button class="btn btn-default" type="submit">Cancel</button>
+    </form>
+
+    <br/>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#idcomment').on('click', function(){
+                $( ".comment" ).toggle( "slide" );
+                if( $(this).parent().hasClass('collapsed') ){
+                    $(this).parent().removeClass('collapsed');
+                } else {
+                    $(this).parent().addClass('collapsed');
+                }
+                return false;
+            });
+            $('#idcomments').on('click', function(){
+                $( ".allcomments" ).toggle( "slide" );
+                if( $(this).parent().hasClass('collapsed') ){
+                    $(this).parent().removeClass('collapsed');
+                } else {
+                    $(this).parent().addClass('collapsed');
+                }
+                return false;
+            })
+        });
+    </script>
+{% endblock %}
