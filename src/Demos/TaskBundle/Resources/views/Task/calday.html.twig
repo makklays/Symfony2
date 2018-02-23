@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('demos_task_home') }}">Home</a></li>
+        <li class="active">Calendar (Day)</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div style="float:left;">
+                <h2>{{ day }}</h2>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div style="margin-top:30px; padding-left:20px;">
+                <a href="{{ path('demos_task_create') }}" >
+                    {% image '@DemosTaskBundle/Resources/public/img/add-icon.png' %}
+                    <img src="{{ asset_url }}" title="" alt="add" style="width:16px;" />
+                    {% endimage %}
+                    Create task
+                </a>
+                <a href="{{ path('demos_task_iscompleted') }}" style="margin-left:30px;">
+                    {% image '@DemosTaskBundle/Resources/public/img/done-icon.png' %}
+                    <img src="{{ asset_url }}" title="" alt="add" style="width:16px;" />
+                    {% endimage %}
+                    Completed tasks
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if tasks|length > 0 %}
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <!--th class="text-center">#</th-->
+                        <th>Title</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Priority</th>
+                        <th class="text-center">When</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in tasks %}
+
+                        <tr>
+                            <!--td class="text-center">{{ task.id }}</td-->
+                            <td><a href="{{ path('demos_task_view', {'id':task.id}) }}">{{ task.title }}</a></td>
+                            <td class="text-center"><span class="label {% if task.type == 'bug' %} label-primary {% elseif task.type == 'new' %} label-danger {% else %} label-success {% endif %}">{{ task.type }}</span></td>
+                            <td class="text-center">{{task.priority}}</td>
+                            <td class="text-center">{{task.createdDate.format("j F Y")}}</td>
+                            <td class="text-center">
+                                <a href="{{ path('demos_task_edit', {'id':task.id}) }}">
+                                    {% image '@DemosTaskBundle/Resources/public/img/pen.png' %}
+                                    <img src="{{ asset_url }}" title="Edit" alt="edit" style="width:16px;" />
+                                    {% endimage %}
+                                </a>
+                                <a href="{{ path('demos_task_delete', {'id':task.id}) }}" onclick="javascript: return confirm('Do you really want to delete this task?');">
+                                    {% image '@DemosTaskBundle/Resources/public/img/delete-icon.gif' %}
+                                    <img src="{{ asset_url }}" title="Delete" alt="del" style="width:16px;" />
+                                    {% endimage %}
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
