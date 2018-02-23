@@ -1,0 +1,12 @@
+demos_task:
+    resource: "@DemosTaskBundle/Resources/config/routing.xml"
+    prefix:   /task
+
+#demos_blog:
+#    resource: "@DemosBlogBundle/Controller/"
+#    type:     annotation
+#    prefix:   /hello
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
