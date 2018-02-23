@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <!--div class="row">
+        <div class="col-md-12">
+            <a href="{{ path('demos_task_home') }}" >tasks</a> |
+            <a href="{{ path('demos_task_image') }}">image</a>
+            <hr/>
+        </div>
+    </div-->
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Image</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form name="" method="post" action="" enctype="multipart/form-data">
+                <input type="text" name="text" value="dfdfhdfhdfh" />
+                <input type="file" name="file" value="" />
+                <button type="submit" class="btn btn-success">Загрузить</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
