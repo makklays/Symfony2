@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex,nofollow" />
+
+    <link href="http://symfony2/bundles/framework/css/structure.css" rel="stylesheet" />
+    <link href="http://symfony2/bundles/framework/css/body.css" rel="stylesheet" />
+    <link href="http://symfony2/bundles/framework/css/exception.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="http://symfony2/bundles/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="http://symfony2/bundles/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+
+    <script src="http://symfony2/bundles/framework/jquery/jquery-3.1.1.js"></script>
+
+
+    {% block stylesheets %}
+        <style>
+            body { padding-top: 70px; }
+
+            table.table-calendar {
+                border-collapse: inherit;
+                border-spacing: 0;
+                background-color: transparent;
+                box-sizing: border-box;
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            .table-calendar > thead > tr > th,
+            .table-calendar > tbody > tr > th,
+            .table-calendar > tfoot > tr > th,
+            .table-calendar > thead > tr > td,
+            .table-calendar > tbody > tr > td,
+            .table-calendar > tfoot > tr > td {
+                padding: 8px;
+                line-height: 1.42857143;
+                vertical-align: top;
+                text-align: center;
+            }
+            .table-calendar > tbody > tr > td {
+                color: #c0c0c0;
+                /*border: 1px solid #ddd;*/
+            }
+            .table-calendar > tbody > tr > th {
+                background-color: #333;
+                border: 1px solid #333;
+                color: #fff;
+                line-height: 3px;
+            }
+            .table-calendar > tbody > tr > td.cday {
+                border-radius: 50%;
+                background-color: #f2dede;
+                color: #00A000;
+            }
+            .table-calendar > tbody > tr > td.cmonth {
+                color: #000000;
+            }
+            .table-calendar > tbody > tr > td.ctask {
+                /*background-color: darkred;*/
+                border-radius: 50%;
+                border: 1px solid darkred;
+            }
+            .table-calendar td:hover {
+                cursor: pointer;
+            }
+
+
+            .nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+                background-color: #428bca;
+                color: #fff;
+            }
+            .nav-sidebar > li > a {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+
+            textarea.textarea-big {
+                height: 250px;
+            }
+            .badge {
+                background-color: #d9534f;
+            }
+
+            .chevron-right::before {
+                left: 0;
+                transform: rotate(45deg);
+            }
+            .chevron::before {
+                border-style: solid;
+                border-width: 3px 3px 0 0;
+                color: #d9d9d9;
+                content: "";
+                display: inline-block;
+                height: 12px;
+                left: 0.15em;
+                position: relative;
+                top: -0.35em;
+                transform: rotate(45deg);
+                vertical-align: middle;
+                width: 12px;
+            }
+            legend.collapsed .chevron {
+                margin-top: 5px;
+                transform: rotate(0deg);
+            }
+            legend .chevron {
+                margin-top: -4px;
+                position: absolute;
+                /*left: 5px;*/
+                transform: rotate(90deg);
+            }
+            legend a {
+                margin-left: 25px;
+            }
+        </style>
+    {% endblock %}
+
+    {% block javascripts %}
+
+    {% endblock %}
+
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('demos_task_home') }}">MULTITASKS</a>
+            </div>
+
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <!--li>
+                        <a href="{{ path('demos_task_home') }}">Home</a>
+                    </li-->
+                    <li class="active">
+                        <a href="{{ path('demos_task_all') }}">All</a>
+                    </li>
+                </ul>
+
+                {#  {{ include('DemosTaskBundle:Admin:login.html.twig') }}  #}
+
+                <!--form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form-->
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% block calendar %}
+                <table class="table-calendar">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <!--th><a href="{# path('demos_task_cal_month', {'y':p_y, 'm':p_m}) #}">&laquo;</a></th-->
+                            <th colspan="5">{{ month_name }}</th>
+                            <th></th>
+                            <!--th><a href="{# path('demos_task_cal_month', {'y':n_y, 'm':n_m}) #}">&raquo;</a></th-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="week">
+                            <th>пн</th>
+                            <th>вт</th>
+                            <th>ср</th>
+                            <th>чт</th>
+                            <th>пт</th>
+                            <th>сб</th>
+                            <th>вс</th>
+                        </tr>
+                        {% for day in calendar %}
+                            {% if day.d_week == 1 or day.number == 1 %}
+                                <tr>
+                            {% endif %}
+
+                            {% if day.d_week != 1 and day.number == 1 %}
+                                <td colspan="{{ day.d_week - 1 }}"></td>
+                                <td class="{{ day.class }}">
+                                    <a href="{{ path('demos_task_cal_day', {'y':day.year, 'm':day.month, 'd':day.number}) }}" style="color:#000000;">{{ day.number }}</a>
+                                </td>
+                            {% else %}
+                                <td class="{{ day.class }}">
+                                    <a href="{{ path('demos_task_cal_day', {'y':day.year, 'm':day.month, 'd':day.number}) }}" style="color:#000000;">{{ day.number }}</a>
+                                </td>
+                            {% endif %}
+
+                            {% if day.d_week == 7 %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endblock %}
+
+                {% block menu %}
+                    <ul class="nav nav-sidebar">
+                        <li class="active">
+                            <a href="{{ path('demos_task_home') }}" >
+                                My tasks
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <!--li>
+                            <a href="{{ path('demos_task_iscompleted') }}" >Tasks DONE!</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('demos_task_create') }}" >
+                                {% image '@DemosTaskBundle/Resources/public/img/add-icon.png' %}
+                                <img src="{{ asset_url }}" title="" alt="add" style="width:16px;" />
+                                {% endimage %}
+                                Create task
+                            </a>
+                        </li-->
+                        <li>
+                            <a href="{{ path('demos_task_image') }}">Image</a>
+                        </li>
+                    </ul>
+
+                    <!--a href="{{ path('demos_task_home') }}" >All tasks</a><br/>
+                    <a href="{{ path('demos_task_create') }}" >
+                        {% image '@DemosTaskBundle/Resources/public/img/add-icon.png' %}
+                            <img src="{{ asset_url }}" title="" alt="add" style="width:16px;" />
+                        {% endimage %}
+                        Create task
+                    </a><br/>
+                    <a href="{{ path('demos_task_image') }}">Image</a><br/-->
+
+                    <br/>
+                {% endblock %}
+
+                <div class="thumbnail">
+                    {% image '@DemosTaskBundle/Resources/public/img/multitask.jpg' %}
+                        <img src="{{ asset_url }}" alt="img" />
+                    {% endimage %}
+                    <div style="text-align:center; padding-top:10px; height:40px; background-color:#428bca; color:#fff;">Multitasking</div>
+                </div>
+            </div>
+
+            <!--div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="" alt="img" />
+                </div>
+            </div-->
+
+            <div class="col-md-9">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
